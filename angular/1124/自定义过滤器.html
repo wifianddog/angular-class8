@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script>
+		//window.href.location = ""
+	</script>
+	<body>
+		<div ng-controller="indexCtrl">
+			<p ng-bind-html="name|html"></p>
+			<input ng-model="namename" />
+			<p>{{obj|wscat:'老蓝':namename}}</p>
+			<p>{{name1}}</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<!-- 
+		使用过滤器有两种方式：
+			1、 在html书写,用管道符号 | ,参数写在前面,方法写在后面,方法后面 : +条件  ( 自定义的和内置的一样用法 )
+			2、在js书写
+				(1) 如果注入的是 【自定义过滤器名字】
+					==> 被处理完后的数据 = 自定义过滤器名字(需要被处理的数据);
+				(2)	如果注入的是$filter
+		  			那么使用【自定义】和【内置】的过滤方法格式  
+		  			==> 被处理完后的数据 = $filter(过滤器名字)(需要被处理的数据);
+		  			
+		  		
+		  		注意： 如果定义的方法要有if条件的，那么
+		  			==> 被处理完后的数据  = 自定义过滤器名字(条件)(需要被处理的数据);
+	-->
+	<script>
+		var app = angular.module("wscats",[]);
+//		console.log(app);
+		app.controller("indexCtrl",function($scope,html){
+			$scope.name = "<p>123<span>456</span></p>";
+			$scope.namename = "老姚"
+			$scope.name1 = "123";
+			$scope.obj = {
+				name:"太愚蠢的老谢",
+				skill:"ps",
+				height:"只会写打飞机"
+			};
+			$scope.arr = [];
+			$scope.name1 = html($scope.name1)
+		})
+		//app.filter();
+		//自定义一个过滤器，回调函数返回的是函数，记得只能返回函数
+		//filter方法也可以注入服务，本质上过滤器也是一个特殊的服务，
+		//也是为了复用同一个方法处理同一类数据(复用)
+		/*
+		 格式：  app.filter("名字",function(){
+					return function(参数){
+						return  想干啥就写啥
+					}
+				})
+		*/
+		app.filter("html",function($sce){
+			//返回的这个函数接受的值来自于表达式这个name
+			return function(html){
+				return $sce.trustAsHtml(html);
+			}
+		})
+		app.filter("wscat",function(){
+			//obj是管道字符左边的值，params是管道字符右边的参数值
+			return function(obj,params1,params2){
+				//console.log(params)
+				var str = obj.name+"只会"+obj.skill+"并且"+obj.height+"。 而我们亲爱的"+params1+"和"+params2+"非常帅";
+				return str;
+			}
+		})
+		app.service("html",function(){
+			return function(input){
+				return input+"已经处理"
+			}
+		})
+		//app.controller()
+		//app.service();
+	</script>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width,user-scalable=no">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			body {
+				background: url(images/bg.jpg);
+				overflow: hidden;
+			}
+			
+			ul,
+			li {
+				list-style: none;
+			}
+			
+			a {
+				text-decoration: none;
+				color: #000;
+			}
+			
+			img {
+				display: block;
+				border: 0;
+			}
+			
+			.clearfix {
+				zoom: 0;
+			}
+			
+			.clearfix:after {
+				content: "";
+				display: block;
+				clear: both;
+				visibility: hidden;
+				height: 0;
+			}
+			
+			.box {
+				width: 900px;
+				height: 330px;
+				margin: 200px auto;
+				position: relative;
+			}
+			
+			.list li {
+				width: 900px;
+				height: 330px;
+				overflow: hidden;
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				transform: scale(0);
+			}
+			
+			.list li.active {
+				opacity: 1;
+				transform: scale(1);
+			}
+			
+			.list li img {
+				width: 100%;
+			}
+			
+			.count {
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+				z-index: 10;
+			}
+			
+			.count li {
+				display: inline-block;
+				font-size: 40px;
+				width: 40px;
+				height: 40px;
+				line-height: 40px;
+				padding: 10px;
+				background: rgba(0, 0, 0, 0.5);
+				color: #fff;
+				font-weight: 600;
+				border-radius: 50%;
+				text-align: center;
+			}
+			
+			.count li.curr {
+				background: red;
+			}
+		</style>
+	</head>
+
+	<body ng-app="lunbotuApp">
+		<div class="box" ng-controller="lunbotuCtrl">
+			<lunbotu-dir></lunbotu-dir>
+		</div>
+		<div class="box" ng-controller="lunbotu2Ctrl">
+			<lunbotu-dir></lunbotu-dir>
+		</div>
+		<script src="js/angular.js"></script>
+		<script>
+			var app = angular.module('lunbotuApp', []);
+			app.controller('lunbotuCtrl', function($scope, $document) {
+				$scope.imgs = [{
+					id: 1,
+					link: 'images/1.jpg'
+				}, {
+					id: 2,
+					link: 'images/2.jpg'
+				}, {
+					id: 3,
+					link: 'images/3.jpg'
+				}, {
+					id: 4,
+					link: 'images/4.jpg'
+				}, {
+					id: 5,
+					link: 'images/5.jpg'
+				}, ];
+
+			})
+			app.controller('lunbotu2Ctrl', function($scope, $document) {
+				$scope.imgs = [{
+					id: 1,
+					link: 'images/1.jpg'
+				}, {
+					id: 2,
+					link: 'images/2.jpg'
+				}, {
+					id: 3,
+					link: 'images/3.jpg'
+				}, {
+					id: 4,
+					link: 'images/4.jpg'
+				}, {
+					id: 5,
+					link: 'images/5.jpg'
+				}, ];
+
+			})
+			app.directive('lunbotuDir', function($document) {
+				return {
+					templateUrl: 'directive/lunbotu.html',
+					//replace: true,
+					link: function() {
+						// html代码写在控制器里面的时候不会污染全局变量,
+						// 注意:(1)如果页面结构没有另外存一份文档,还写在html那里,
+						//		那么控制变化的js可以写在controller控制器里面
+						//	   (2)如果页面结构另外存一份文档,那么要写在directive用link一个匿名
+						// 		     函数的形式,这样子就可以先渲染模板再获得数据
+						//			因为放在控制器里面没法获取节点
+						
+						
+						// 1. 获取相应的下标
+						// 2. 定义一个淡入淡出的方法 通过下标修改相应的图片
+						var list = $document[0].getElementById('list');
+						var count = $document[0].getElementById('count');
+						var imgs = list.getElementsByTagName('li');
+						var btns = count.getElementsByTagName('li');
+						// var i = 0 ,ls=imgs.length;
+						//  遍历获取下表
+						for(var i = 0; i < btns.length; i++) {
+							btns[i].index = i;
+							btns[i].onmousedown = function() {
+								show(this.index);
+							};
+						};
+
+						//  定义一个淡入淡出函数
+						function show(a) {
+							for(var i = 0; i < btns.length; i++) {
+								//  所有的都去掉 curr 样式
+								btns[i].className = "";
+								//  给选中的添加 curr 样式
+								btns[a].className = "curr";
+
+								// 图片切换
+								imgs[i].style.opacity = 0;
+								imgs[a].style.opacity = 1;
+								//  放大效果
+								imgs[i].style.transform = "scale(0)";
+								imgs[a].style.transform = "scale(1)";
+								imgs[a].style.transition = "all 3s ease";
+							};
+						};
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>

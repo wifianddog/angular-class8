@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<a href="#/index">index</a>
+			<a href="#/home">home</a>
+			<p>{{name}}</p>
+			<div ui-view=""></div>
+		</div>
+	</body>
+	<!--
+		1.引入angular框架，引入ui-route的js
+		2.注入ui.router模块
+		3.在app.config配置路由，注入$stateProvider服务，然后用$stateProvider.state()定义路由
+		4.往对应的地方添加<div ui-view=""></div>
+	-->
+	<script src="js/angular.js"></script>
+	<script src="js/angular-ui-router.js"></script>
+	<script>
+		var app = angular.module('wscat',['ui.router']);
+		app.config(function($stateProvider){
+			$stateProvider.state('index',{
+				//url+#/index
+				url:'/index',
+				templateUrl:'template/index.html'
+			}).state('home',{
+				//url+#/home
+				url:'/home',
+				templateUrl:'template/home.html'
+			}).state('index.a',{
+				//url+#/index/a
+				url:'/a',
+				template:'<div>a</div>'
+			}).state('index.b',{
+				//url+#/index/b
+				url:'/b',
+				template:'<div>b</div>'
+			})
+		})
+		app.controller('indexCtrl',function($scope){
+			$scope.name = 'wscat';
+		})
+	</script>
+</html>

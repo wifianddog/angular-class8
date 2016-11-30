@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="indexCtrl">
+			<p>{{name}}</p>
+		</div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script>
+		var app = angular.module("wscats", []);
+		app.controller("indexCtrl", function($scope, http, $http) {
+			$scope.name = "wscats";
+			console.log(http);
+			//$http.get('').success().error()
+			http.get('js/json.json', {
+					params: {
+						name: 'abc',
+						skill: 'ps',
+						asdsa: '12'
+					}
+				}).success(function(data) {
+					console.log(data)
+				})
+				//$().addClass().css().an
+				//$("p").addClass();
+				//$("p").css()
+		})
+		setTimeout(function() {})
+		app.service('http', function() {
+			/*var obj = {
+				
+			}*/
+			//new Object();
+			/*function http(name){
+				//私有变量
+				var name = 'cba';
+				//共有变量
+				this.name = name;
+				console.log("123");
+				(function(){
+					alert("123");
+				})()
+			}*/
+			//封装 继承 多态
+			//var obj = new http('abc');
+			//prototype
+			
+			var obj = {
+				ajax: function(url, params, method) {
+					xmlhttp = new XMLHttpRequest();
+
+					//?name=abc&skill=ps
+					var str = "";
+					for(index in params.params) {
+						str += index + "=" + params.params[index] + "&";
+					}
+					str = str.substring(0, str.length - 1);
+					console.log(str)
+					xmlhttp.open(method, url + (method == "GET" ? "?" + str : ""), true);
+					xmlhttp.send(method=="POST"?str:"");
+					return this;
+				},
+				success: function(callback) {
+					xmlhttp.onreadystatechange = function() {
+						if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
+							//xmlhttp.responseText
+							callback(JSON.parse(xmlhttp.responseText));
+						}
+					}
+					return this
+				},
+				error: function(callback) {
+					if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {} else {
+						callback("ERROR");
+					}
+					return this;
+				},
+				get: function(url, params) {
+					this.ajax(url, params, "GET")
+					return this;
+				},
+				post: function(url, params) {
+					this.ajax(url, params, "POST")
+					return this
+				}
+			}
+
+			return obj;
+		})
+	</script>
+
+</html>

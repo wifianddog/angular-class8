@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		// angular的思路类似面向对象的思路，里面封装了很多的函数和对象
+		var $obj = {
+			name:'wsscat',      		//  定义了name，一下方法修改的都是这个
+			obj:{
+				
+			},
+			setname:function(name){
+				this.name = name;		// 方法--用于改变name
+			},
+			getname:function(){
+				return this.name;		// 方法--用于得到name  （return）
+			}
+		}// 对象到这里结束，里面定义了两个方法
+		
+		function controller($obj){   // 使用的时候先注入
+			$obj.setname("abc");
+			console.log($obj.getname());    // 打印出   abc
+		}
+		
+		controller($obj);    // 函数要调用才能执行
+		
+		// 复用，在另外的控制器也可以继续使用
+		function controller2(){	
+		}
+	</script>
+</html>

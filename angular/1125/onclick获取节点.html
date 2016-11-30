@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	
+
+	<body>
+		<button>Ok</button>
+	</body>
+	<script>
+		/*function Click(e) {
+			console.log(e)
+		}*/
+		
+		document.getElementsByTagName("button")[0].addEventListener('click',function(e){
+			e.target.style.color = "red";
+		})
+	</script>
+</html>

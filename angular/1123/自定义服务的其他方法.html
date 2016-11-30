@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="indexCtrl">
+			<p>{{name}}</p>
+		</div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script>
+		var app = angular.module("wscats", []);
+		console.log(app);
+		app.config(function($provide,π) {
+			console.log(π);
+			//判断登录注册
+			//console.log(USER_NAME)
+			$provide.value("abc", 456);
+			$provide.provider("CBD", function() {
+				return {
+					$get: function() {
+						return {
+							name: 'cbdService',
+							hello: function() {
+								return "hello world"
+							}
+						}
+					}
+				}
+
+			})
+			$provide.service("SER",function(){
+				return {
+					name:"SER"
+				}
+			})
+		})
+		app.controller("indexCtrl", function($scope, facService, π, abc, proService, CBD, SER, USER_NAME, constru) {
+			$scope.name = "wscats";
+			console.log(facService);
+			console.log(facService.sum(5, 6));
+			console.log(abc)
+			π = 3;
+			console.log(π);
+			console.log(proService);
+			console.log(CBD)
+			console.log(SER)
+			console.log(USER_NAME);
+			console.log(constru)
+		})
+		//定义一个对象，只能返回对象，不能构造函数
+		app.factory("facService", function() {
+				return {
+					name: 'abc',
+					sum: function(a, b) {
+						return a + b;
+					}
+				}
+		})
+		//定义一个常量
+		app.constant('π', 123)
+		//service是一个构造器，它可以返回构造函数，返回时候自动帮你实例化，也可以返回对象
+		app.service('constru', function() {
+			var app = "app";
+			this.name = "pi";
+			this.func = function(){
+				
+			}
+			this.obj = {
+				
+			}
+		})
+		//provider是所有服务的老大，所有服务最后都是由它生成
+		app.provider('proService', function() {
+			return {
+				$get: function() {
+					return {
+						name: 'proService',
+						hello: function() {
+							return "hello world"
+						}
+					}
+				}
+			}
+		})
+		//value不可以注入到config constant可以注入到config
+		app.value("USER_NAME","wscats");
+	</script>
+
+</html>

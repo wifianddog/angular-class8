@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>
+		#fixed {
+			height: 400px;
+			overflow: auto;
+		}
+	</style>
+
+	<body ng-controller="indexCtrl">
+		<div id="fixed" ng-scroll="loadMore()"></div>
+		<button ng-click="loadMore()">点击更多</button>
+	</body>
+	<script src="js/angular.js"></script>
+	<script>
+		var app = angular.module('wscat', []);
+		app.controller('indexCtrl', function($scope) {
+			$scope.name = '123';
+			$scope.items = [];
+			var i = 0;
+			for(i; i <= 100; i++) {
+				$scope.items.push(Math.random() * 10);
+			}
+			$scope.log = function(){
+				console.log('test');
+			}
+			$scope.loadMore = function() {
+					var i = 0;
+					for(i; i <= 10; i++) {
+						$scope.items.push(Math.random() * 10);
+					}
+				}
+				//脏值检测 dirty
+				/*angular.element(document.qu5erySelector('#fixed')).bind('scroll', function(e) {
+					//console.log(e)
+					console.log(e.target.offsetHeight);//可视高度
+					console.log(e.target.scrollTop);//一直在变，滚动经过高度
+					console.log(e.target.scrollHeight);//列表总高度
+					if(e.target.offsetHeight + e.target.scrollTop >= e.target.scrollHeight) {
+						console.log("已经到底了");
+						$scope.loadMore();
+						console.log($scope);
+						console.log($scope.items.length);
+						//手动刷新
+						$scope.$apply();
+					}
+				})*/
+		})
+		app.directive('ngScroll', function() {
+			return {
+				template: '<ul><li ng-repeat="item in items">{{item}}</li></ul>',
+				link: function(scope, ele, attr) {
+					console.log(scope);
+					console.log(ele);
+					console.log(attr)
+					ele.bind('scroll', function(e) {
+						if(e.target.offsetHeight + e.target.scrollTop >= e.target.scrollHeight) {
+							console.log("到底啦到底啦")
+								//scope.loadMore();
+							;
+							scope.$apply(attr['ngScroll']);
+						}
+					})
+				}
+			}
+		})
+	</script>
+
+</html>

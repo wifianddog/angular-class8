@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script src="angular.js"></script>
+	<body ng-app="wscats">
+		<!--ng-app定义angular程序的作用范围-->
+
+		<!--
+			一般一个页面中只存在一个ng-app(读作ng app)，这是一般情况下，也可以定义很多个，但是不可以嵌套关系，只能是兄弟关系，名字也不要相同，一般只会定义一个，因为即使写多一个的话也只是类似写多一个controller而已
+		-->
+		<div ng-controller="indexCtrl">
+			<!--ng-controller在ng-app的作用范围下再划分一个小的作用域,控制器之间是互不影响的-->
+			<p>zheshidiyigemingzi{{name}}wqeqwewq</p>
+			<!--表达式用两个大括号来定义，把我们需要绑定数据的名字放在里面我们就可以渲染控制器里面定义好的值-->
+			<div>{{ABC}}</div>
+			<!--我们可以再表达式里面用+字符串拼接，数字运算或者三元表达式-->
+			<!--甚至我们可以把表达式放在属性值身上渲染-->
+			<p>{{arr[0]+arr[1]}}</p>
+			<p>{{obj.name}}</p>
+			<p>{{num+10}}</p>
+			<p>{{bool}}</p>
+			<p id="{{name}}" class="{{className}}"></p>
+		</div>
+		<div ng-controller="index2Ctrl">
+			<p class="{{bool?"a":"b"}}">{{bool?"a":"b"}}</p>   <!-- 三元操作符 = 三目运算符 -->
+			<button ng-click="bool=!bool">toggle</button>
+		</div>
+	</body>
+	<script>
+		//MVC model模型 view视图 controller控制器
+		//controller 将view和medel连接起来，view是html部分，medel是数据部分（script那里的数据），将视图分成一块一块的作用域，实现功能
+		//document.getElementById("p").innerHTML = arr[0];
+		var app = angular.module("wscats",[]);
+		app.controller("indexCtrl",function($scope){
+			//绑定字符串
+			$scope.name = "wscatFHFHGF";
+			$scope.ABC = "abc";
+			//绑定数组
+			$scope.arr = ["a","b","c"];
+			//绑定对象
+			$scope.obj = {
+				name:"ABCDASDAS",
+			}
+			//绑定数字
+			$scope.num = 12233;
+			//绑定布尔值
+			$scope.bool = true;
+
+			$scope.className = "pClass";
+		})
+		app.controller("index2Ctrl",function($scope){
+			$scope.name = "second name";
+			$scope.bool = false;  // 布尔类型
+		})
+	</script>
+	<style>
+		.a{
+			color: red;
+		}
+
+		.b{
+			color: blue;
+		}
+	</style>
+</html>
+
+<!--
+	1、jq是库，是基于节点的方法的库，增删查改，angular是一个框架，是数据的库，数据驱动
+
+	2、子控制器的值会继承父控制器的值，如果子控制器有定义值，那么就拿自己定义的，没有的时候才拿父元素的
+
+ -->

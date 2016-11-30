@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="htmlApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body ng-controller="indexCtrl">
+		{{html}}
+		<!--xss攻击-->
+		<!--<img src=" "/><p>123</p><input name=" " />-->
+		<!-- 本来src只是输出一个地址，但是用这种方法会输出原本没有的结构，从而打乱页面 -->
+		<div ng-bind-html="html"></div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module("htmlApp",[]);
+		app.controller("indexCtrl",function($scope,$sce){
+			$scope.html = "<p>123</p>";
+			$scope.image = "./1.jpg";
+			//用$sce服务将我们的html结构转化为安全字符然后输出
+			$scope.html = $sce.trustAsHtml($scope.html);
+		})
+	</script>
+</html>

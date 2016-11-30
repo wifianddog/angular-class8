@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<!--ng-init其实跟我们在控制器里面定义的值一样-->
+			<!-- 指令里面直接写名字，不要写表达式，只有几个比较特殊的例外，其他都不要写表达式 -->
+			<p id="p">{{abc}}</p>
+			<p style="color: red;">$sce</p>
+			<p ng-bind-html="html"></p>meout</p>
+			<p ng-bind="num"></p>
+			<p style="color: green;">$ti
+			<p style="color: cornflowerblue;">$interval</p>
+			<p ng-bind="num2"></p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script>
+		var app = angular.module("wscats", []);
+		/*
+			$scope.name = "wscats";
+			$scope.abc = 'cba';
+				||
+				||		以上的写法其实就是下面这种写法
+				||
+			$scope = {
+				name:"wscats",
+				abc:"cba"
+			}
+		*/
+		//服务其实就是在控制器的匿名函数里面，服务不是函数就是对象，一般是对象，本身函数就是属于对象
+		app.controller("indexCtrl", function($scope,$http,$sce,$timeout,$interval,$window,$document,$location) {
+			$scope.name = "wscats";
+			$scope.abc = 'cba';
+			console.log($sce);
+			//$http
+			//ajax
+			//$http.post()
+			//或者$http.get()  params传我们需要发送给后端，也就是服务器的参数
+			//$http.jsonp()跨域		*****************************************
+			//post的时候数据会隐藏在Network 里面 XHR 的一堆数据的 Request Payload 里面
+			$http.jsonp("test.php",{
+				params:{
+					name:"abc",		// 写在这里相当于 test.php?name=abc&skill=PS  这样子
+					skill:"PS",
+					callback:"JSON_CALLBACK",
+				}
+			}).success(function(data){     //  成功时执行
+				console.log(data);
+				console.log("ggg:"+data.skill);
+			}).error(function(data){		//  失败时执行
+
+			})
+
+			//$sce   安全处理	***************************************
+			$scope.html = $sce.trustAsHtml("<p>安全处理1234</p>")
+
+			//$timeout 		***************************************
+			$scope.num = 0;
+			//如果里面存在$scope作用域的属性值那么统一用$timeout方法
+			$timeout(function(){
+				$scope.num++;  // 这个是$scope作用域的属性值要用$timeout的方法
+			}
+			,1000);
+			// 如果里面没有用到$scope作用域的属性值，那么跟原先用原生的写法是一样的
+			var a = 0;
+			setTimeout(function(){
+				a++;
+				console.log(a)
+			},1000)
+
+			//$interval  *******************************************
+			$scope.num2 = 0;
+			$interval(function(){
+				$scope.num2++;
+			},1000)
+
+
+			//$window  ********************************************
+			//$window封装了window对象，其实这两者是没有区别的，window里面有很多的方法
+			// $ 开头的方法是angular封装的方法，尽量用这种，如果用原来的可能会有错误
+			// angular 比较高冷，我们要用它的一套框架来写
+			$window.navigator;
+			console.log($window.navigator);
+			console.log($window);
+			console.log(window);
+			//console.log($window.document.getElementById("p").style.backgroundColor = "#006600")
+			//console.log(window.document.getElementById("p").style.backgroundColor = "#008800");
+
+
+
+			//$document 	********************************************
+			console.log($document[0].getElementById("p"));
+			console.log($document);   //  $document  是一个数组
+			console.log($document[0]);
+			console.log(window.document);
+
+			// angular是基于数据驱动的框架，但是里面也可以用jquery的思路，本身里面就带着一套jquery
+
+
+			//$("p").addClass("red").remove().css();     // jquery里面的用法，angular里面也可以这样写，但很少有人这样写
+			
+			//jqlite vs jquery vs zepto
+			//jqlite 是 jquery的小兄弟
+			// zepto 也是 jquery的小兄弟
+			// 视频35:35
+			/*
+			 * angular.element(document.getElementById("p")).addClass("red").css("color","#008800").bind("click",function(){
+				alert("123")
+			})
+				// 这个是angular的写法，相当于$('节点')，但是angular不是针对节点的增删查改所以建议不要这么做，但是在里面写jquery也是可以的，可以引入jquery来用jquery来写，用原生也可以
+			*/
+			/*$("p").bind("click",function(){   // bind 是jquery的方法
+				alert("123")
+			})*/
+			// 以前jquery没有分模块，现在这样就可以分了
+			
+			/*angular.element($("p")).ajax();
+			 *$.ajax()
+			 * angular已经自己封装了就不要这样子写了
+			 * 
+			 * angular.element($("p")).addClass("blue");
+			 * 等同  ($("p")).addClass("blue");
+			 * 只不过前一种是angular里面的方法后一种是jquery的，但是angular不是完全封装jquery的
+			 *angular.element($("p")).animate();  // 比如这个就不行，没有封装到
+			 *$("p").animate();
+			 
+			
+			* */
+
+			//$location 	**********************************************
+			// http 超文本传输协议  		// 里面有一个方法==>哈希值   hash
+			console.log($location);  // $location 里面有很多的方法
+			console.log($location.$$absUrl);   // 能打出路径
+		})
+		app.controller("index2Ctrl", function($scope) {
+			$scope.name = "wscats";
+			$scope.abc = 'cba';
+			console.log($sce)
+		})
+	</script>
+</html>
+
+

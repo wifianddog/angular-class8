@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		/*function test(){
+			console.log("123")
+		}
+		setTimeout(test(),1000);*/
+		//ajax setimeout setinterval   原生里面只有这三个是 异步 的
+		// function(){
+
+		// }
+		var i = 0;		// for循环其实i是定义在外面的，js只有函数是有自己的作用域，自己的块作用域，其他都是在全局定义的，for循环是定义在全部的，是先执行完全部的for循环才执行定时器的
+		for(;i<=5;i++){
+			setTimeout(function(){
+				console.log(i)
+			}			// () 如果在这里的后面加上这个，就会形成一个闭包，打印 从0~5，不加的话打印6个6，这样子就会同步执行了
+			,1000)
+		}
+		console.log(i)  // for循环是没有自己的作用域的，所定义的东西都是在全部定义的
+	</script>
+</html>

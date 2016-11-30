@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script src="angular.js"></script>
+
+	<body>
+		<div ng-controller="indexCtrl">
+			<input ng-model="ask" ng-keyup="answer()" />
+			<p>{{message}}</p>
+		</div>
+	</body>
+	<script>
+		//gulp
+		var app = angular.module("wscat", []);
+		app.controller("indexCtrl", function($scope, $http) {
+			$scope.name = "abc";
+			$scope.answer = function() {
+				$http.get("http://www.tuling123.com/openapi/api?key=c75ba576f50ddaa5fd2a87615d144ecf&info=" + $scope.ask).success(
+					function(data) {
+						console.log(data);
+						$scope.message = data.text
+					}
+				)
+			}
+
+		})
+	</script>
+
+</html>

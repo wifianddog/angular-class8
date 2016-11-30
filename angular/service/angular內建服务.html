@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+
+		<div ng-controller="indexCtrl">
+			<!--ng-init其实跟我们在控制器里面定义的值一样-->
+			<p id="p">{{abc}}</p>
+			<p style="color: red;">$sce</p>
+			<p ng-bind-html="html"></p>
+			<p style="color: red;">$timeout</p>
+			<p ng-bind="num"></p>
+			<p style="color: red;">$interval</p>
+			<p ng-bind="num2"></p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script>
+		var app = angular.module("wscats", []);
+		//服务其实就是在控制器的匿名函数里面
+		/*$scope = {
+			name:"wscats",
+			abc:"cba"
+		}*/
+		//控制器是为了分治 也就是分开管理代码；
+		//服务就是为了复用 就是插件；
+		app.controller("indexCtrl", function($scope,$http,$sce,$timeout,$interval,$window,$document,$location) {
+			$scope.name = "wscats";
+			$scope.abc = 'cba';
+			console.log($sce);
+			//$http
+			//ajax
+			//$http.post()
+			//或者$http.get() params传我们需要发送给后端，也就是服务器的参数
+			//$http.jsonp()跨域
+			$http.jsonp("test.php",{
+				params:{
+					name:"abc",
+					skill:"PS",
+					// callback callback:"JSON_CALLBACK",
+				}
+			}).success(function(data){
+				// JSON_CALLBACK({})
+
+				console.log(data);
+			}).error(function(data){
+
+			})
+
+			//$sce
+			$scope.html = $sce.trustAsHtml("<p>1234</p>")
+
+			//$timeout
+			$scope.num = 0;
+			//如果里面这个存在$scope作用域的属性值那么统一用$timeout方法
+			$timeout(function(){
+				$scope.num++;
+			}
+			,1000);
+			var a = 0;
+			setTimeout(function(){
+				a++;
+				console.log(a)
+			},1000)
+
+			//$interval
+			$scope.num2 = 0;
+			$interval(function(){
+				$scope.num2++;
+			},1000)
+
+			//$window
+			//$window封装了window对象
+			$window.navigator;
+			//console.log($window.document.getElementById("p").style.backgroundColor = "#006600")
+			//console.log(window.document.getElementById("p").style.backgroundColor = "#008800");
+
+			//$document
+			console.log($document[0].getElementById("p"));
+			console.log(window.document);
+
+			//$("p").addClass("red").remove().css();
+			//jqlite vs jquery vs zepto
+			/*angular.element(document.getElementById("p")).addClass("red").css("color","#008800").bind("click",function(){
+				alert("123")
+			})*/
+			/*$("p").bind("click",function(){
+				alert("123")
+			})*/
+			/*angular.element($("p")).ajax();
+			$("p").animate();
+			$.ajax()*/
+
+			//$location
+			console.log($location.$$absUrl);
+		})
+		app.controller("index2Ctrl", function($scope) {
+			$scope.name = "wscats";
+			$scope.abc = 'cba';
+			console.log($sce)
+		})
+	</script>
+</html>

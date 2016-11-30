@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="appleApp">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="weui.css" />
+	</head>
+	<style>
+		article section{
+			width: 100px;
+			height: 30px;
+			font-size: 20px;
+			float: left;
+			margin-left: 30px;
+			background: pink;
+		}
+		article div{
+			float: left;
+			width: 200px;
+			height: 200px;
+			font-size: 100px;
+			line-height: 200px;
+			text-align: center;
+			background: steelblue;
+			margin-left: 30px;
+		}
+		.border{
+			border-bottom: 3px solid lawngreen;
+		}
+	</style>
+	<body ng-controller="indexCtrl">
+		<div style="margin: 30px;">
+			<p>{{name}}</p>
+			<p ng-bind="name"></p>
+			<p><input type="text" ng-model="name" /></p>
+		</div>
+		<!-- 输入框 和 要显示隐藏的盒子要绑定一个值建立联系 -->
+		<input type="checkbox" ng-model="myVar">
+		<div ng-show="myVar">
+			<h1>Welcome</h1>
+			<p>Welcome to my home.</p>
+		</div>
+		<article>
+			<!--class="{{page1?'border':''}}"-->
+			<!--我们最终想得到的是花括号里面是什么值,所以全部判断都要写在花括号里面-->
+			<!--注意单引号和双引号,双引号里面要用单引号-->
+			<!-- 输入框 和 要显示隐藏的盒子要绑定一个值建立联系,这里这个值是page1,2,3 -->
+			<section ng-click="show(1)" class="{{page1?'border':''}}">第一个选项</section>
+			<section ng-click="show(2)" class="{{page2?'border':''}}">第二个选项</section>
+			<section ng-click="show(3)" class="{{page3?'border':''}}">第三个选项</section>
+			<br /><br />
+			<div ng-show="page1">1</div>
+			<div ng-show="page2">2</div>			
+			<div ng-show="page3">3</div>			
+		</article>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module("appleApp", []);
+		app.controller("indexCtrl", function($scope) {
+			$scope.name = "apple";
+			// 选项卡的基础状态
+			$scope.page1 = true;
+			$scope.page2 = false;
+			$scope.page3 = false;
+			$scope.show = function(shu){
+				if(shu==1){
+					$scope.page1 = true;
+					$scope.page2 = false;
+					$scope.page3 = false;
+				}else if(shu==2){
+					$scope.page2 = true;
+					$scope.page1 = false;
+					$scope.page3 = false;
+				}else{
+					$scope.page3 = true;
+					$scope.page1 = false;
+					$scope.page2 = false;
+				}
+			}
+		});
+	</script>
+
+</html>

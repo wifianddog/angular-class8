@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="ngModelApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<p>{{name}}</p>
+			<p>{{arr[0]}}</p>
+			<input ng-model="getData" />  <!-- input -->
+			<p>{{getData}}</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module("ngModelApp",[]);
+		app.controller("indexCtrl",function($scope,$http){
+			$scope.name = "abc";
+			$scope.arr = ["a","b"];
+			$scope.getData = 121231233;
+			// 相当于设置了一个初始值，当input输入框中的值改变时，这里的值也改变==＞（导致）<p>{{getData}}</p>里面的值也会改变，就像一个三角关系，一个改变了其他两个也会改变
+		})
+	</script>
+</html>

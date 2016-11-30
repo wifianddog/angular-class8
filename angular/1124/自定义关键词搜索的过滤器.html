@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="indexCtrl">
+			<input ng-model="red" ng-keyup="makeRed()" />
+			<div ng-bind-html="htmlSced"></div>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module('wscat', []);
+		app.controller('indexCtrl', function($scope, $sce, $filter) {
+			$scope.name = "123";
+			var html = "<p>wscat</p>";
+			$scope.htmlSced = $sce.trustAsHtml(html);
+			$scope.makeRed = function() {
+				$scope.html = $filter('wsscat')(html, $scope.red);
+				$scope.htmlSced = $sce.trustAsHtml($scope.html);
+			}
+		})
+		app.filter('wsscat', function() {
+			return function(input, params) {
+				if(params) {
+					//接受输入框输入的值
+					//接受html结构
+					console.log("需要处理的html：" + input);
+					console.log("输入检索的关键词：" + params)
+					var str = input.split(params);
+					console.log(str);
+					var addRed = "<span style='color:red'>" + params + "</span>";
+					var output = str.join(addRed);
+					console.log(output);
+					return output;
+				}
+			}
+		})
+	</script>
+
+</html>

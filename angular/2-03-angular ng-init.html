@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<!--ng-init 其实跟我们在控制器里面定义的值一样，值的初始化，一般不这样用-->
+			<p ng-init="abc='cba'">{{abc}}</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module("wscats", [])
+		app.controller("indexCtrl", function($scope) {
+			$scope.name = "wscats";
+			$scope.abc = 'cba'
+		})
+	</script>
+</html>

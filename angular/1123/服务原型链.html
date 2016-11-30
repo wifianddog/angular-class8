@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="indexCtrl">
+			<p>{{name}}</p>
+		</div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script>
+		var app = angular.module("wscats", []);
+		app.controller("indexCtrl", function($scope, http, $http) {
+			$scope.name = "wscats";
+			console.log(http);
+			http.get('js/json.json', {
+				params: {
+					name: 'abc',
+					skill: 'ps',
+					asdsa: '12'
+				}
+			}).success(function(data) {
+				console.log(data)
+			})
+		})
+		setTimeout(function() {})
+		app.service('http', function() {
+			function tool() {
+				this.toStr = function(params) {
+					var str = "";
+					for(index in params.params) {
+						str += index + "=" + params.params[index] + "&";
+					}
+					str = str.substring(0, str.length - 1);
+					return str;
+				};
+				this.name = "wsscat";
+			}
+
+			function http() {
+				tool.call(this);
+				this.ajax = function(url, params, method) {
+					xmlhttp = new XMLHttpRequest();
+
+					//?name=abc&skill=ps
+					var str = this.toStr(params);
+					//console.log(str)
+					xmlhttp.open(method, url + (method == "GET" ? "?" + str : ""), true);
+					xmlhttp.send(method == "POST" ? str : "");
+					return this;
+				};
+				this.success = function(callback) {
+					xmlhttp.onreadystatechange = function() {
+						if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
+							//xmlhttp.responseText
+							callback(JSON.parse(xmlhttp.responseText));
+						}
+					}
+					return this
+				};
+				this.error = function(callback) {
+					if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {} else {
+						callback("ERROR");
+					}
+					return this;
+				}
+			}
+			http.prototype.get = function(url, params) {
+				this.ajax(url, params, "GET");
+				return this;
+			}
+			http.prototype.post = function(url, params) {
+				this.ajax(url, params, "POST");
+				return this;
+			}
+			return new http();
+		})
+	</script>
+
+</html>

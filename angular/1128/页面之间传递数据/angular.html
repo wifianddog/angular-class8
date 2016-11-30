@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-view=""></div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script>
+		var app = angular.module('wscat',['ngRoute']);
+		app.config(function($routeProvider){
+			$routeProvider.when('/index',{
+				templateUrl:'template/index.html'
+			}).when('/detail/:id',{
+				templateUrl:'template/detail.html'
+			})
+		})
+		app.controller('indexCtrl',function($scope,$http){
+			$scope.name = '123';
+			$http.get('js/news.json').success(function(data){
+				console.log(data);
+				$scope.news = data.data;
+			})
+		})
+		app.controller('detailCtrl',function($scope,$http,$routeParams){
+			console.log($routeParams);
+			$http.get('js/news.json').success(function(data){
+				$scope.new = data.data[$routeParams.id].detail;
+			})
+		})
+	</script>
+</html>

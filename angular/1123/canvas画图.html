@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>
+		canvas {
+			width: 100%;
+			height: 200px;
+		}
+	</style>
+
+	<body>
+		<div ng-controller="indexCtrl">
+		</div>
+		<div ng-controller="index2Ctrl">
+		</div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script>
+		var app = angular.module('wscat', []);
+		app.controller('indexCtrl', function($scope, $document, $interval, $http, hh) {
+			var cans = hh.m('indexCtrl',{
+				color:'yellow',
+				width:5,
+				default:{
+					x:0,
+					y:0
+				}
+			});
+			var offset = 10;
+			$interval(function(){
+				cans.lineTo(offset, parseInt(Math.random()*51));
+				cans.stroke();
+				offset+=10;
+			},1000)
+			//hh.e('indexCtrl');
+			/*$scope.name = "wscat";
+			var can = $document[0].getElementById('can');
+			var cans = can.getContext('2d');
+			cans.moveTo(0,0);
+			var offset = 10;
+			$interval(function(){
+				$http.get("").success(function(data){
+					
+				})
+				cans.lineTo(offset,parseInt(Math.random()*101));
+				cans.stroke();
+				offset+=10
+			},3000)*/
+		})
+		app.controller('index2Ctrl', function($scope, $document, $interval, $http, hh) {
+			var cans = hh.m('index2Ctrl',{
+				color:'blue',
+				width:1,
+				default:{
+					x:0,
+					y:0
+				}
+			});
+			var offset = 10;
+			$interval(function(){
+				cans.lineTo(offset, parseInt(Math.random()*51));
+				cans.stroke();
+				offset+=10;
+			},1000)
+			/*hh.e('index2Ctrl',function(el){
+				el.style.backgroundColor = "#666";
+				el.addEventListener('click',function(){
+					alert(123);
+				})
+			})
+			$scope.name = "wscat";
+			var can = $document[0].getElementById('can2');
+			var cans = can.getContext('2d');
+			cans.moveTo(0,0);
+			var offset = 5;
+			$interval(function(){
+				$http.get("").success(function(data){
+					
+				})
+				cans.lineTo(offset,parseInt(Math.random()*101));
+				cans.stroke();
+				offset+=10
+			},3000)*/
+		})
+		app.service('hh', function($document) {
+			return {
+				e: function(ctrl) {
+					var can = $document[0].querySelector('[ng-controller=' + ctrl + ']');
+					var canvas = $document[0].createElement("canvas");
+					canvas.id = ctrl + "Canvas";
+					can.appendChild(canvas);
+					return canvas;
+				},
+				m:function(ctrl,params){
+					var can = this.e(ctrl);
+					var cans = can.getContext('2d');
+					cans.moveTo(params.default.x,params.default.y);
+					cans.lineWidth = params.width;
+					cans.strokeStyle = params.color;
+					return cans;
+				}
+			}
+		})
+	</script>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <style>
+
+    </style>
+</head>
+<body>
+</body>
+<script src="js/angular.js"></script>
+<script>
+// 闭包的两种写法
+// 第一种
+    function bibao(callback){    // 传进来一个函数
+        var a = 1;
+        var b = 2;
+        callback(a,b)  //  执行这个函数，在这里执行能够得到函数里面的数据
+    }
+    bibao(function(a,b){    // 调用闭包函数，并且传进来一个函数，参数和在闭包函数里面小函数定义的一样
+        console.log(a);
+        console.log(b)
+    })
+
+// 第二种
+    function bibao2(){
+        var a = 3;
+        var b = 4;
+        return function(){     //  这种写法是返回一个闭包函数
+            console.log(a);
+            console.log(b);
+        }
+    }
+    (bibao2())();
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="diyService">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="indexCtrl"></div>
+		<div ng-controller="index2Ctrl">{{name}}</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module("diyService", []);
+//		console.log(app);
+		app.controller("indexCtrl", function($scope, cookie) {
+			// 当在外面没有自定义服务的时候，可以把内容写在里面
+				function setCookie(name, value) {
+					var days = 10;
+					var ex = new Date();
+					ex.setTime(ex.getTime() + days * 24 * 60 * 60 * 1000);
+					document.cookie = name + "=" + value + ";expires=" + ex;  // 注意这个
+				}
+				//console.log(cookie.setCookie("abc","cba"))
+				setCookie("cba", "abc");  // 调用
+			})
+			//服务返回函数或者对象
+		app.controller("index2Ctrl", function($scope, $http, cookie, http) {
+			$scope.name = cookie.getCookie("abc");
+//			$http.get().success(function(){});
+			//  这是应用
+//			$http.get('test.php').success(function(data){
+//				console.log(data);
+//			})
+
+
+
+			//http.ajax("test.php");
+			http.ajax("test.php",function(data){
+				console.log(data)
+			})
+		})
+		//自定义服务，其实就是返回一个包含各种方法的对象，然后我们调用的时候，直接了往控制器注入我们的服务名，然后我们就可以使用该服务的方法
+		app.service("cookie", function() {
+			var obj = {
+				setCookie: function(name, value) {
+					var days = 10;
+					var ex = new Date();
+					ex.setTime(ex.getTime() + days * 24 * 60 * 60 * 1000);
+					document.cookie = name + "=" + value + ";expires=" + ex;
+				},
+				getCookie: function(name) {
+					var a;
+					var reg = new RegExp("(^|)" + name + "=([^;]*)(;|$)");
+					if(a = document.cookie.match(reg)) {
+						return a[2];
+					}
+				}
+			}
+			return obj;
+		})
+		//  定义一个http服务
+		app.service("http",function(){
+			return {
+				ajax:function(method,url,callback){
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.open(method,url,true);
+					xmlhttp.send();
+					xmlhttp.onreadystatechange = function(){
+						if(xmlhttp.readyState==4&&xmlhttp.status==200){
+							console.log(JSON.parse(xmlhttp.responseText));
+						    callback(JSON.parse(xmlhttp.responseText));
+							//return JSON.parse(xmlhttp.responseText);
+						}
+					}
+				},
+				get:function(url){
+					this.ajax("GET",url,callback)
+				},
+				post:function(url){
+					this.ajax("POST",url,callback)
+				},
+				jsonp:function(){
+					
+				}
+			}
+		})
+	</script>
+
+</html>

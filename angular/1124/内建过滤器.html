@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!-- 内置的九种过滤器
+			1、currency 		货币格式
+			2、lowercase		小写
+			3、uppercase		大写
+			4、filter		用来处理一个数组，然后可以过滤出含有某个子串 的元素，作为一个子数组来返回。
+			5、orderBy		排序
+			6、limitTo		截取
+			7、data			日期
+			8、json			obj==>json格式		一般用在测试
+			9、number		数字三位一 , 格式，保留几位小数	
+			
+			扩展： 	ng-repeat		循环输出
+					opt in opts		表示 opt是opts里面的一个项，遍历数组
+		-->
+		<div ng-controller="indexCtrl">
+			<!-- 【货币格式】 -->
+			<p style="color: red;">currency  变成货币格式</p>
+			<p>{{num|currency:'￥'}}</p>
+			<!-- 【小写】 -->
+			<p style="color: red;">lowercase  变成小写</p>
+			<p>{{str|lowercase}}</p>
+			<!-- 【大写】 -->
+			<p style="color: red">uppercase  变成大写</p>
+			<p>{{str|uppercase}}</p>
+			
+					
+			<!--
+				ng-repeat 指令用于   【循环输出】   指定次数  的 HTML元素。
+				集合必须是数组或对象。
+				一般接受  [{},{},{},{}]这样子的格式
+				
+				opt in opts   表示 opt是opts里面的一个项，遍历数组
+			-->
+			<p style="color:red">ng-repeat</p>
+			<p> 下拉列表--旧的写法</p>
+			<select>
+				<option value="{{opts[0].value}}">{{opts[0].name}}</option>
+				<option value="{{opts[1].value}}">{{opts[1].name}}</option>
+				<option value="{{opts[2].value}}">{{opts[2].name}}</option>
+			</select>
+			
+  		
+			<p>下拉列表--新的写法 ng-repea="opt in opts"</p>
+			<select>
+				<option ng-repeat="opt in opts" value="{{opt.value}}">{{opt.name}}</option>
+			</select>
+						
+			<!-- 【filter  从数组项中选择一个子集，其实就是筛选】 -->
+			<p style="color: red;">filter  从数组项中选择一个子集。</p>
+			<!--filter用在处理数组筛选的逻辑上，一般配合ng-repeat和数组使用，后面跟着筛选的条件，即含有这个条件的都会被筛选出来-->
+			<input ng-model="chooseOpt" />
+			<ul>
+				<li ng-repeat="opt in opts|filter:chooseOpt">你的值为：{{opt.value}}，并且你的名字为{{opt.name}}</li>
+			</ul>
+			
+					
+
+			<div ng-repeat="opt in opts">{{opt.name}}</div><br />
+			
+			<!-- 【orderBy  根据某个表达式排列数组】 -->
+			<select ng-model="sort">   <!--在这里绑定，当value改变时，sort也改变-->
+				<option value="name">name</option>
+				<option value="value">value</option>
+			</select>
+			<!-- ng-click="bool=!bool" 也可以这样写 -->
+			<button ng-click="changeBool()">排序</button>
+			<input ng-model="chooseOpt" />
+			<p style="color: red;">orderBy  根据某个表达式排列数组。</p>
+			<ul>  
+				<!-- 谁需要就写在哪 -->
+				<!-- :bool 有真假才有切换，当真时，排序，当假时，不排序           并且从中选出子集      可以跟几个筛选条件  -->
+				<li ng-repeat="opt in opts|orderBy:sort:bool|filter:chooseOpt">你的值为：{{opt.value}}，并且你的名字为{{opt.name}}</li>
+			</ul>
+			
+			
+			<!-- 【limitTo  截取数组或字符串   正从头，负从尾】 -->
+			<!--截取数组-->
+			<p style="color: red;">limitTo  截取数组或字符串   正从头，负从尾</p>
+			<p>{{str|limitTo:3}}</p>
+			
+			<!-- 截取数组 -->			
+			<input type="range" ng-model="num" />
+			<ul>
+				<li ng-repeat="opt in opts|limitTo:num">你的值为：{{opt.value}}，并且你的名字为{{opt.name}}</li>
+			</ul>
+			
+			<!-- 【data】 -->
+			<p style="color: red;">date</p>
+			<!--时间戳-->
+			<p>{{date|date : "yyyy-MM-dd hh:mm:ss EEEE"}}</p>
+			
+			
+			<!--【json 将对象 设置成json格式】-->
+			<p style="color: red;">json 不用参数  类似 JSON.stringify()</p>
+			<p>{{obj|json}}</p>
+			
+			
+			<!-- 【number 为一个数字加上千位分割   保留多少位小数】 -->
+			<p style="color: red;">number  后面的参数指定保留几位小数</p>
+			<p>{{num|number:2}}</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		//过滤器其实就是处理相同的数据，把它转化为你想要的格式
+		//其实它也是一种特殊的服务，我们所有过滤都可以用服务的方法来定义
+		var app = angular.module('wscats',[]);
+		app.controller('indexCtrl',function($scope){
+			// 开始写控制器里面的内容
+			$scope.chooseOpt = "";
+			$scope.bool = true;
+			$scope.date = new Date().getTime();  // 得到时间戳
+			$scope.changeBool = function(){   //   点击函数
+				$scope.bool=!$scope.bool
+			}
+			$scope.obj = {
+				name:'abc',
+				skill:'ps'
+			}
+			
+			
+			$scope.sort = "value";   // value 会改变，这个不能留空，要不然下拉列表那里会有一个空的初始状态
+			$scope.num = 1;
+			$scope.str = 'sTrInG';
+			
+			// 定义一个数组，里面有四个对象，每个对象里有  value 和  name 值
+			$scope.opts = [{
+				value:1,
+				name:'ac'
+			},
+			{
+				value:4,
+				name:'ab'
+			},
+			{
+				value:3,
+				name:'sibi'
+			},
+			{
+				value:2,
+				name:'1bASDASD'
+			}]// 数组结束
+			//$scope.num = currency.make($scope.num,"￥");
+		})
+		//  这是自定义的写法
+		/*app.service('currency',function(){
+			return {
+				make:function(num,country){
+					return country+num+'.00';
+				}
+			}
+		})*/
+	</script>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<p style="color: red;">ng-bind-html</p>
+			<p ng-bind-html="html"></p>
+			<p style="color: red;">ng-bind</p>
+			<p ng-bind="name"></p>
+			<p style="color: red;">ng-model</p>
+			<input ng-model="name" />
+			<p style="color: red;">ng-click</p>
+			<button ng-click="Click()">click</button>
+		
+			<p style="color: red;">ng-class</p>
+			<select ng-model="classname">
+				<option value="red">red</option>
+				<option value="blue">blue</option>
+			</select>
+			<p ng-class="classname">red</p>
+			<p class="{{classname}}">red</p>
+			
+			<p style="color: red;">ng-show</p>
+			<button ng-click="bool=!bool">Ok</button>
+			<p ng-hide="bool">测试一下是否隐藏</p>
+			<p ng-show="bool">测试一下是否显示</p>
+			
+			<p style="color: red;">ng-if</p>
+			<button ng-click="bool=!bool">Ok</button>
+			<p ng-if="bool">那就出现</p>
+			
+			<p style="color: red;">ng-repeat</p>
+			<select>
+				<option ng-repeat="arr in arrs" value="{{arr.value}}">{{arr.name}}</option>
+			</select>
+			<ul>
+				<li ng-click="Click($index)" ng-repeat="arr in arrs">{{arr.name}}</li>
+			</ul>
+			<table>
+				<tr ng-repeat="arr in arrs">
+					<td>{{arr.name}}</td>
+					<td>{{arr.value}}</td>
+					<td>{{$index}}</td>
+				</tr>
+			</table>
+			
+			<p ng-style="style">ng-style</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module('wscat',[]);
+		app.controller('indexCtrl',function($scope,$rootScope,$http,$sce){
+			$scope.name = "123";
+			$scope.html = $sce.trustAsHtml("<p>html</p>");
+			$scope.Click = function(){
+				console.log("Click")
+			}
+			$scope.classname = 'red';
+			$scope.bool = false;
+			$scope.arrs = [{
+				name:'a',
+				value:1
+			},{
+				name:'b',
+				value:2
+			},{
+				name:'c',
+				value:3
+			}];
+			$scope.style = {
+				'color':'blue',
+				'fontSize':'20px',
+			}
+		})
+		app.directive('ngHidee',function(){
+			return {
+				link:function(scope,ele,attr){
+					attr.ngHide;
+					ele.css('display','none');
+				}
+			}
+		})
+	</script>
+	<style>
+		.red{
+			color: red;
+		}
+		.blue{
+			color: blue;
+		}
+	</style>
+</html>

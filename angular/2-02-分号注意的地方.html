@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		console.log("abc")
+		;(function(){     		// 如果这个分号不加会出错,会黏在一起，会说这不是一个函数
+			console.log("abc")	// 这个函数会自己执行（自执行函数最正确的写法，分号在前面，高逼格）
+		})();
+		function abc(){
+			return {			// 如果返回的对象写在return的下一行，结果会是undefind，因为return的后面会自动加上分号
+				name:'abc'
+			}
+		}
+		console.log(abc());
+	</script>
+</html>

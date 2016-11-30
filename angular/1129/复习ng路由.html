@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="routeApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<p>{{name}}</p>
+			<div ng-view=""></div>
+		</div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script>
+		var app = angular.module('routeApp',['ngRoute']);
+		app.controller('indexCtrl',function($scope){
+			$scope.name = '123';
+		})
+		app.config(function($routeProvider){
+			//url+#/home
+			$routeProvider.when('/home',{
+				templateUrl:'template/home.html',
+				//controller:'homeCtrl'
+			}).when('/login/:id',{
+				templateUrl:'template/login.html',
+				controller:'loginCtrl'
+			})
+		})
+		app.controller('homeCtrl',function($scope,$http){
+			//$rootScope service
+			$scope.text = '456';
+			$http.get('js/data.json').success(function(data){
+				console.log(data)
+				$scope.arrs = data.data;
+			})
+			//页面之间交换数据的方法
+			$scope.exchange = function(){
+				console.log($scope.id);
+				window.location.href = '#/login/' + $scope.id;
+			}
+		})
+		app.controller('home2Ctrl',function($scope){
+			$scope.text = '789';
+		})
+		app.controller('loginCtrl',function($scope,$routeParams){
+			console.log($routeParams);
+			$scope.text = '123';
+			$scope.Click = function(){
+				alert('test');
+			}
+		})
+	</script>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			{{name}}
+		</div>
+		<div ng-controller="index2Ctrl">
+			{{name}}
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		/* 
+		  	 一般不建议定义太多全局变量$rootscope，会污染全局，一般定义一个服务定义变量然后在其他控制器注入调用就好
+			控制器之间可以使用同一个服务，可以通过这个纽带使用相同的数据，服务的数据也可以在控制器里面修改
+			打印出来的数据分先后，没改变之前打印，还是原来的数据
+			改变了之后打印，是改变后的数据
+			数据在这个控制器里面改变了，其他应用到这个数据的控制器里面的这个数据也会改变
+ 		*/
+ 		// 注意：控制器之间是相互没有影响的，执行不分先后顺序
+ 		//     除非里面有一些有指向关系的数据，那么一方改变了另一方也改变
+ 		//     这种时候，执行的先后就看 html 那里谁写在前面，写在前面的先执行
+ 		
+		var app = angular.module('wscat',[]);
+		app.controller('indexCtrl',function($scope,tool2Service){  // 控制器1
+			//$rootScope.name = 1;
+			console.log(tool2Service.num);  // 6  打印的是原先的值,改变的设置写在下面
+			$scope.name = 'wscats';
+			tool2Service.exchange = $scope.name;  // exchange 是在这里定义的
+			
+			tool2Service.num = 1;   // 在这里这个值改变了		
+			console.log(tool2Service.num);  // 1
+		})
+		app.controller('index2Ctrl',function($scope,tool2Service){  // 控制器1
+			tool2Service.num = 10;   // 在这里改变只能改变这里的tool2Service.num
+			console.log(tool2Service.num);   // 1
+			$scope.name = tool2Service.exchange;
+		})
+		// 以下是自定义服务
+		// 返回一个方法sum(a,b)==>得到两个参数的和
+		app.service('toolService',function(){
+			return {
+				sum:function(a,b){
+					return a+b;
+				}
+			}
+		})
+		// 返回由上面一个控制器里面的方法得到的  一个数num
+		app.service('tool2Service',function($http,$document,toolService){
+			var num = toolService.sum(1,5); 
+			return {
+				num:num,
+			}
+		})
+	</script>
+</html>

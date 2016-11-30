@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="appleApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body ng-controller="indexCtrl">
+		<div ng-bind="name"></div>
+		<a href="#/index">index</a>
+		<a href="#/home">home</a>
+		<div ui-view=""></div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-ui-router.js"></script>
+	<script>
+		var app = angular.module("appleApp",["ui.router"]);
+		app.controller("indexCtrl",function($scope){
+			$scope.name = "apple";
+		})
+		// 注意 ui-route 和 ngroute的语法区别  
+		/*
+		 * 1.在angular.module 那里注入的是	"ui.router"
+		 * 2.app.config(function($stateProvider) 里面注入的是$stateProvider
+		 * 3.$stateProvider.state 应用时是 state
+		 * 4.第一个参数不是路由,是一个名字 'index'
+		 * 5.在url: 这里写路由
+		 */
+		
+		/*
+		 * 有几点要注意
+		 */
+		app.config(function($stateProvider){
+			// 一层嵌套
+			$stateProvider.state('index',{
+				url:'/index',
+				templateUrl:'template/index.html'
+			}).state('home',{
+				url:'/home',
+				templateUrl:'template/home.html'  // 写地址的时候按照文件夹路径书写
+			// 第二层嵌套	
+			}).state('index.app',{    // 嵌套的时候,小的要用 . 连接
+				url:'/app',  // url 只要写最小的那个的名字,以 / 开头
+				views:{		 // 分几个view输出时,是这样子写的,分几个template输出模块 
+					'view1':{
+						template:'<div>小苹果--大微微</div>'
+					},
+					'view2':{
+						template:'<div>小苹果--小微微</div>'
+					}
+				}			
+			}).state('index.pan',{
+				url:'/pan',
+				template:'<div>小熊猫</div>'
+			})
+			
+		})
+	</script>
+</html>

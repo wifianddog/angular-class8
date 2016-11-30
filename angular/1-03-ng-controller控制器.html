@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript" src="angular.js" ></script>
+	<body ng-app="wscats">
+		<!--子控制器能继承父控制器的所有model数据，但是兄弟关系的控制器互不影响-->
+		<div ng-controller="indexCtrl">
+			{{name}}
+			<div ng-controller="indexChildCtrl">
+				{{name}}
+			</div>
+		</div>
+		<div ng-controller="index2Ctrl">
+			{{name}}
+		</div>
+	</body>
+	<script>
+		angular.module("wscats",[])
+		.controller("indexCtrl",function($scope){
+			$scope.name = "wscats1"
+		})
+		.controller("index2Ctrl",function($scope){
+			$scope.name = "wscats2"
+		})
+		.controller("indexChildCtrl",function($scope){
+			$scope.name = "wscats3"
+		})
+		// angular 和 controller控制器 之间可以链式调用，可以连起来写
+	</script>
+</html>

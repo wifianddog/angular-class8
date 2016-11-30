@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="wscats">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<p>{{currency}}</p>
+			<p>{{name}}</p>
+			<p>{{currency1}}</p>
+			<p>{{laoxie}}</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<!-- 
+		使用过滤器有两种方式：
+			1、 在html书写,用管道符号 | ,参数写在前面,方法写在后面,方法后面 : +条件  ( 自定义的和内置的一样用法 )
+			2、在js书写
+				(1) 如果注入的是 【自定义过滤器名字】
+					==> 被处理完后的数据 = 自定义过滤器名字(需要被处理的数据);
+				(2)	如果注入的是$filter
+		  			那么使用【自定义】和【内置】的过滤方法格式  
+		  			==> 被处理完后的数据 = $filter(过滤器名字)(需要被处理的数据);
+		  			
+		  		
+		  		注意： 如果定义的方法要有if条件的，那么
+		  			==> 被处理完后的数据  = 自定义过滤器名字(条件)(需要被处理的数据);
+	-->
+	<script>
+		var app = angular.module('wscats',[]);
+		app.controller('indexCtrl',function($scope,$filter,filter){
+			$scope.name = 'wscats';
+			//$filter以服务的形式注入到控制器，然后用以下格式触发
+			//格式： 被处理完后的数据 = $filter(过滤器名字)(需要被处理的数据)
+			$scope.currency = $filter('currency')(123,'#');  // 后面的  # 是加在前面的符号，不写默认美元
+			$scope.name = $filter('uppercase')($scope.name);
+			
+			
+			/*filter('currency') == function(currency){
+				return "$"+currency;
+			}*/
+			$scope.currency1 = filter('currency')(456); // 这是自己调用格式，后面是参数
+			//						    if的条件     需要被处理的数据
+			$scope.laoxie = $filter('wscat')({
+				name:"太愚蠢的老谢",
+				skill:"ps",
+				height:"只会写打飞机"
+			},"老蓝","老姚");
+		})
+		app.service('filter',function(){
+			return function(filterName){
+				if(filterName=='currency'){
+					return function(currency){
+						return "$"+currency+".00";
+					}
+				}
+			};
+		})
+		//{{name|wscat:'1','2'}}
+		app.filter("wscat",function(){
+			//obj是管道字符左边的值，params是管道字符右边的参数值
+			return function(obj,params1,params2){
+				//console.log(params)
+				var str = obj.name+"只会"+obj.skill+"并且"+obj.height+"。 而我们亲爱的"+params1+"和"+params2+"非常帅";
+				return str;
+			}
+		})
+		//app.filter()
+	</script>
+</html>

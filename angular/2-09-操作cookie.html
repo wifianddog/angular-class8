@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+	<script>	
+		//  定义了一个设置cookie的方法
+		var setCookie = function(name, value) {
+			var Days = 30;
+			var exp = new Date();
+			exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);  // 一天有多少毫秒
+			document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+			//$cookies[name] = value;
+		};
+		setCookie("NAME","WS")
+	</script>
+</html>

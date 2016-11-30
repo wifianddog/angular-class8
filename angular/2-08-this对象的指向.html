@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+	<script>
+	var a= 1;
+	window.a
+	window.test
+		function test() {   
+			console.log(this);  // 这个this是指向window
+		}
+		var obj = {
+			test: function() {   // 这个函数可以读obj里面的值，函数可以读上一层函数的值
+				console.log(this);	// 指向obj
+				
+				var self = this;
+				function a(){    //  这是一个闭包       这个函数可以读 text（）的值
+					console.log(this); // 指向  window ，是指向外面的，闭包的作用可以把函数的值抛向外面到window
+					console.log(self); // 指向  obj（test）
+				};
+				a();
+			}
+		}
+		obj.test()
+	</script>
+	<!-- 
+		函数可以读上一层函数的值（包含时候）		
+		闭包是指向外面的，函数在哪个对象里面定义就是指向哪个对象的，但是如果这个函数里面还有一个函数，那么这个小函数是指向window的
+	-->	
+</html>

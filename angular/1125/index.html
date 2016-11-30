@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script src="js/angular.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/weui.css" />
+
+	<body>
+		<div ng-controller="indexCtrl">		
+			<!--
+			这样子也可以,前面不是ng,但是指令我们习惯用 ng
+			<ab-wscat></ab-wscat>
+			<div ab-wscat></div>
+			<div class="ab-wscat"></div>
+			-->
+			
+			
+			<!-- 如果起的名字是ngWscat,那么引入html有三种格式-->
+			<!--html标签-->	
+			<ng-wscat></ng-wscat>
+			<!--指令-->
+			<div ng-wscat></div>
+			<div class="ng-wscat"></div>
+			<danxuankuang></danxuankuang>
+			<danxuankuang></danxuankuang>
+			<!--<p>{{name}}</p>-->
+			<wscat></wscat>
+		</div>
+	</body>
+	<script src="js/index.js"></script>
+
+</html>

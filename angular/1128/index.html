@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<p ng-bind-html="html|fil"></p>
+			<p ng-bind="name"></p>
+			<input ng-model="name" />
+			<wscat></wscat>
+		</div>
+	</body>
+	<!--
+    	MVVM MVC
+    -->
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module('wscat',[]);
+		// 控制器
+		app.controller('indexCtrl',function($scope,$rootScope,$http,tool){
+			$scope.name = "123";
+			$scope.html = "<p>html</p>"
+			console.log(tool.sum(3,4));
+		})
+		// 过滤器
+		app.filter('fil',function($sce){
+			return function(input){
+				return $sce.trustAsHtml(input);
+			}
+		})
+		// 服务
+		app.service('tool',function(){
+			return {
+				sum:function(a,b){
+					return a+b;
+				}
+			}
+		})
+		// 组件
+		app.directive('wscat',function(){
+			return {
+				template:'<p>FIRST DIRECTIVE</p>',
+				link:function(scope,ele,attr){
+					ele.css('color','#006600')
+				}
+			}
+		})
+	</script>
+</html>

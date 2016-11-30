@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="loginApp">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="loginCtrl">
+			username:
+				<input id="name" type="text" ng-model="name" />
+			password:
+				<input id="password" type="password" ng-model="password" />
+			<!-- ng-click="login()"  点击时实行一个函数 -->
+				<button ng-click="login()">login</button>
+				<p>{{status?"登录成功":"登录失败"}}</p>  <!-- 三目运算符，判断登录状态 -->
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+	/*  $().val
+			$.ajax({
+				data:{
+
+					}
+			})
+	*/
+		var app = angular.module("loginApp", []);
+		app.controller("loginCtrl", function($scope, $http) {
+			$scope.name;   		//定义了两个值，上面写了双向，这里也要定义一个，尽管不定义值
+			$scope.password;
+			$scope.login = function() {
+				// console.log("username:" + $scope.name);
+				// console.log("password:" + $scope.password);
+				// 向后端发送数据，对比后端数据之后返回结果，对结果进行 计算
+				$http.get("login.php?username=" + $scope.name + "&password=" + $scope.password).success(function(data) {
+					// console.log(123);
+					console.log(data);
+					$scope.status = data.code;  // 返回 1 或者 0 ，即 真 或者 假（非0为真）
+
+				})
+			}
+		})
+	</script>
+<!--
+    当返回数据为 username -》abc 和 password -》123   成功，则返回json数据
+                                                      失败，返回另外的json数据
+
+
+-->
+</html>

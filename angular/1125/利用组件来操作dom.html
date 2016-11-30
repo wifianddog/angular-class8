@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="indexCtrl">
+			<p ng-bind="name"></p>
+			<button ng-click="click()">click</button>
+			<!--<ng-test></ng-test>-->
+			<div id="click" ng-clickk="click()">click</div>
+		</div>
+	</body>
+	<script src="js/angular.js"></script>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script>
+		var app = angular.module('wscat', []);
+		app.controller('indexCtrl', function($scope) {
+			$scope.name = "wscat";
+			$scope.abc = "cba";
+			$scope.click = function(){
+				console.log("点击事件")
+			}
+			//use jquery
+			$("p").css('color', 'red');
+			//use jlite
+			angular.element(document.querySelector('p')).css('fontSize', '20px');
+			$("p>span").css('color','blue');
+		})
+		app.directive('ngClickk',function(){
+			return {
+				//有template或者有templateUrl并且directive以元素的形式呈现，那这就是组件
+				//没有模板，并且有link这个函数，一般就是指令
+				//两者其实可以共存，即可以是指令也可以是一个组件
+				//restrict
+				//template
+				//replace
+				templateUrl:"directive/test.html",
+				//我们应该把所有操作dom的方法写到link里面
+				//		   简写     scope,  ele,   attr
+				link:function(scope,element,attribute){
+					console.log(scope);
+					console.log(element);
+					console.log(attribute);
+					$('#click').addClass("red");
+					element.addClass("blue");
+					/*$('#click').on('click',function(){
+						scope.click();
+					})*/
+				}
+			}
+		})
+	</script>
+
+</html>

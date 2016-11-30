@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="indexApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="indexCtrl">
+			<div ng-bind-html="html|htmlsce"></div>
+			<input ng-model = "name1" type="text"/>
+			<input ng-model = "name2" type="text"/>
+			<p>{{apple|wscat:name1:name2}}</p>
+		</div>
+	</body>
+	<script src="angular.js"></script>
+	<script>
+		var app = angular.module("indexApp",[]);
+		app.controller("indexCtrl",function($scope){
+			$scope.html = "<p>123<span>456</span></p>";
+			$scope.apple = "小毛驴啦啦啦。";
+			$scope.name1 = "小炮萝";
+			$scope.name2 = "技能";
+		})
+		app.filter("htmlsce",function($sce){
+			return function(input){
+				return $sce.trustAsHtml(input);
+			}
+		})
+		app.filter("wscat",function(){
+			return function(input,name1,name2){
+				return input + name1 + "超级可爱的并且"+name2+"简单粗暴";
+			}
+		})
+	</script>
+</html>

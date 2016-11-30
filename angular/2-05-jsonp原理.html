@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!-- <button onclick="jsonp('js/jsonp.js')">SEND JSONP</button> -->
+		<!-- jsonp('test.php') 调用这个函数，即链接进一个数据 -->
+		<!-- 注意对应的php书写是不一样的 -->
+		<button onclick="jsonp('callback.php')">SEND JSONP</button>
+		<p id="p"></p>
+	</body>
+	<script>
+		//  一个函数不一定要有return，随自己喜好，调用函数，就是在调用的地方写出那一段代码
+		function callback(data){	//  输入什么
+			console.log(data);		//  在控制台打印什么
+			//return data;
+			document.getElementById("p").innerHTML = data.name;  //  p标签的值为什么
+		}
+	</script>
+	<!--
+		jsonp 能解决跨域 是因为它用了script标签的src属性能跨域这个特性
+		jsonp其实就是动态生成一个<script></script>标签
+		这个script标签返回的是一段函数，而这段函数就是包含着一段数据
+
+    -->
+	<script>
+		function jsonp(url){
+			var script = document.createElement("script");  // 生成script标签
+			script.src = url;	// 这个srcipt标签链接着一个数据
+			document.body.appendChild(script);   // 添加进html里面
+		}
+		//jsonp("js/jsonp.js")
+	</script>
+	<!--<script src="js/jsonp.js"></script>-->
+	<!--<script>
+		callback({
+			name:'abc',
+			skill:'ps'
+		})
+	</script>-->
+</html>

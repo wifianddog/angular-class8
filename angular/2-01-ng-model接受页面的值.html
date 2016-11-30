@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body ng-controller="indexCtrl">
+		<!--ng-model 一般用来接受 input  select和textarea的值-->
+
+		<!--ng-bind其实跟{{}}异曲同工-->
+		<!--如果js放在下面用ng-bind就好了，如果js放在开头，就用{{}}-->
+		<!--因为如果你把js放在下面，会先加载html结构，所以会把表达式先渲染出来，直到angular加载完成后
+			我们angular就会认领这个表达式，把它转化为对应的数据
+		-->
+
+		<!--
+			<select name = "menu" size = "4">
+				<option value="1">xxx</option>
+				<option value="1">xxx</option>
+				<option value="1">xxx</option>
+			</select>
+
+			1、size 未定义具体值或设置为1 -》下拉列表效果
+			2、大于1的正整数 -》列表框
+
+		-->
+
+		<p ng-bind="name"></p>  <!-- ng-bind -->
+		<input ng-model="name" />
+		<textarea ng-model="name"></textarea>
+		<select ng-model="name">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="wsscat">wsscat</option>
+		</select>
+		<input type="range" ng-model="num" />
+		<p ng-bind="num"></p>   <!-- ng-bind -->
+	</body>
+	<script type="text/javascript" src="angular.js" ></script>
+	<script>
+		var app = angular.module("wscat",[]);
+		app.controller("indexCtrl",function($scope){
+			$scope.name = "wsscat"
+			$scope.num = 1
+		})
+	</script>
+</html>

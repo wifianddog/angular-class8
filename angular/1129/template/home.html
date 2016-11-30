@@ -1,0 +1,22 @@
+<style>
+	#home{
+		background-color: #008800;
+	}
+	
+	#home p{
+		color: white;
+	}
+</style>
+
+<div id="home" ng-controller="homeCtrl">
+	<p>test</p>
+	<p>{{name}}</p>
+	home
+	<select ng-model="id">
+		<option ng-repeat="arr in arrs" value="{{arr.id}}">{{arr.name}}</option>
+	</select>
+	<button ng-click="exchange()">购买</button>
+</div>
+<div ng-controller="home2Ctrl">
+	<p>{{text}}</p>
+</div>

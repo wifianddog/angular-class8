@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="wscatApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <style>
+
+    </style>
+</head>
+<body ng-controller="modelCtrl">
+    <p>{{name}}</p>
+</body>
+<script type="text/javascript" src="angular.js"></script>
+<script>
+    var app = angular.module("wscatApp",[]);
+    app.controller("modelCtrl",function($scope){
+        $scope.name = 123;
+    });
+
+</script>
+</html>

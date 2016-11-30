@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		// 数组和对象一样是指向关系，不分书写的先后，一个改变了，有指向关系的另外一个也会改变
+		var a　= [1,2,3];
+		//var b = a;
+		var b = a   // 创建了指向关系
+		
+		a[1] = 4;
+		b[2] = 5
+		console.log(a);//[1,4,5]
+		console.log(b);//[1,4,5]
+		
+		var obj = {
+			num:1
+		}
+		//indexCtrl
+		function make(obj){
+			obj['num'] = 2     // 在这里改变在下面的函数输出时出现了错误
+		}
+		make(obj);   // 之前老师写的时候没有给参数出现了错误
+		
+		//index2Ctrl
+		function log(obj){
+			console.log(obj)
+		}
+		log(obj);
+	</script>
+</html>
+
+<!--
+	扩展：
+	var a={“城市”:”北京”,”面积”:16800,”人口”:1600};   这是一个对象
+	
+	这是一个关联数组                                            关联数组就是对象，对象就是关联数组
+	a["城市"]=”北京”;
+	a["面积"]=16800;
+	a["人口"]=1600;
+	
+	var a=[1,2,3,4];
+
+	a['foo']=’Hello World’;
+	
+	alert(a.length);
+
+	最后的结果是4，也就是说，数组a的元素个数是4个。
+	
+-->

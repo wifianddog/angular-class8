@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="wscat">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<a href="#/cba">index</a>
+		<a href="#/home">home</a>
+		<a href="#/abc">abc</a>
+		<div ng-view=""></div>
+	</body>
+	<script src="angular.js"></script>
+	<script src="angular-route.js"></script>
+	<!--
+		1.引入路由的插件，要在angular.js后面引入angular-route.js
+		2.配置路由，在app.config配置路由,把ngRoute注入到主模块
+		3.在视图里面添加<div ng-view=""></div>标签
+		4.如果你现在那个地方异步刷新页面，你就配置路由并在对应的地方添加<div ng-view=""></div>
+	-->
+	<script>
+		var app = angular.module('wscat',['ngRoute']);
+		app.config(function($routeProvider){
+			$routeProvider.when('/cba',{
+				template:'<div>123</div>'
+			}).when('/home',{
+				template:'<div>456</div>'
+			}).when('/abc',{
+				template:'<div>abc</div>'
+			})
+		})
+	</script>
+</html>
